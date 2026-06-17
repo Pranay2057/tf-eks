@@ -46,10 +46,6 @@ resource "aws_iam_policy" "get_secrets_manager" {
   policy = data.aws_iam_policy_document.get_secrets_manager.json
 }
 
-resource "aws_iam_role" "eks-role" {
-  assume_role_policy = data.aws_iam_policy_document.trust.json
-}
-
 data "aws_iam_policy_document" "trust" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
@@ -73,4 +69,19 @@ data "aws_iam_policy_document" "trust" {
       values   = ["sts.amazonaws.com"]
     }
   }
+}
+
+resource "aws_iam_role" "eks-role" {
+  name               = var.role_name
+  assume_role_policy = data.aws_iam_policy_document.trust.json
+}
+
+resource "aws_iam_role_policy_attachment" "get_parameter_store" {
+  role       = aws_iam_role.eks-role.name
+  policy_arn = aws_iam_policy.get_parameter_store.arn
+}
+
+resource "aws_iam_role_policy_attachment" "get_secrets_manager" {
+  role       = aws_iam_role.eks-role.name
+  policy_arn = aws_iam_policy.get_secrets_manager.arn
 }
