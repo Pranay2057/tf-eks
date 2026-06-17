@@ -18,4 +18,6 @@ module "eks" {
   subnet_ids = var.subnet_ids
 
   tags = var.tags
+
+  enable_irsa = true
 }

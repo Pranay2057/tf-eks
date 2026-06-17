@@ -22,3 +22,19 @@ variable "tags" {
     Terraform   = "true"
   }
 }
+
+variable "role_name" {
+  description = "IAM role name for the service account"
+  type        = string
+}
+
+variable "namespace" {
+  description = "Kubernetes namespace of the service account"
+  type        = string
+  default     = "default"
+}
+
+variable "service_account_name" {
+  description = "Kubernetes service account name"
+  type        = string
+}
